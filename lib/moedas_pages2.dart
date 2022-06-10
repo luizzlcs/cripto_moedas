@@ -1,4 +1,5 @@
 import 'package:cripto_moedas/model/moeda.dart';
+import 'package:cripto_moedas/pages/moedas_detalhes_page2.dart';
 import 'package:cripto_moedas/repositories/moeda_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,7 +15,6 @@ class _MoedasPages2State extends State<MoedasPages2> {
   final tabela = MoedaRepository.tabela;
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   List<Moeda> selecionada = [];
-
 
   appBarDinamica() {
     if (selecionada.isNotEmpty) {
@@ -35,6 +35,15 @@ class _MoedasPages2State extends State<MoedasPages2> {
         title: const Text('Moedas Página 2'),
       );
     }
+  }
+
+  mostrarDetalhes(Moeda moeda) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MoedasDetalhesPage2(moeda: moeda),
+      ),
+    );
   }
 
   @override
@@ -66,6 +75,7 @@ class _MoedasPages2State extends State<MoedasPages2> {
                       print(tabela[moeda].nome);
                     });
                   },
+                  onTap: () => mostrarDetalhes(tabela[moeda]),
                 ),
             padding: EdgeInsets.all(16),
             separatorBuilder: (_, __) => const Divider(),
