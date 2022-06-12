@@ -77,7 +77,7 @@ class _MoedasPages2State extends State<MoedasPages2> {
                   },
                   onTap: () => mostrarDetalhes(tabela[moeda]),
                 ),
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             separatorBuilder: (_, __) => const Divider(),
             itemCount: tabela.length),
         floatingActionButtonLocation:

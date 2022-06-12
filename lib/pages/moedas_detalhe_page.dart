@@ -24,7 +24,7 @@ class _MoedasDetalhePageState extends State<MoedasDetalhePage> {
       Navigator.pop(context);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Compra realizada com sucesso!')),
+        const SnackBar(content: Text('Compra realizada com sucesso!')),
       );
     }
   }

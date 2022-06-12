@@ -30,7 +30,7 @@ class _MoedasPageState extends State<MoedasPage> {
                 selecionada = [];
               });
             },
-            icon: Icon(Icons.playlist_remove_outlined)),
+            icon: const Icon(Icons.playlist_remove_outlined)),
         title: Center(
           child: Text(
             '${selecionada.length} selecionadas',
