@@ -1,9 +1,8 @@
+import 'package:cripto_moedas/home_page.dart';
 import 'package:cripto_moedas/moedas_page.dart';
 import 'package:cripto_moedas/moedas_page3.dart';
 import 'package:cripto_moedas/moedas_pages2.dart';
 import 'package:flutter/material.dart';
-
-import 'home_page.dart';
 
 class MeuAplicativo extends StatelessWidget {
   const MeuAplicativo({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class MeuAplicativo extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
       ),
       home: const HomePage(),
       routes: {

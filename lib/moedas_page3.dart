@@ -12,7 +12,7 @@ class MoedasPage3 extends StatelessWidget {
     NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
 
     detalhesMoeda(Moeda moeda){
-      Navigator.push(context, MaterialPageRoute(builder: (context) => ,))
+      // Navigator.push(context, MaterialPageRoute(builder: (context) => ,))
     }
     return Scaffold(
       appBar: AppBar(

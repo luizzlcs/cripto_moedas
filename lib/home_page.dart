@@ -1,42 +1,57 @@
+import 'dart:ui';
+
+import 'package:cripto_moedas/Menu.dart';
+import 'package:cripto_moedas/moedas_page.dart';
+import 'package:cripto_moedas/pages/favoritas_page.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int paginaAtual = 0;
+  late PageController pc;
+
+  @override
+  void initState() {
+    super.initState();
+    pc = PageController(initialPage: paginaAtual);
+  }
+
+  setPaginaAtual(pagina) {
+    setState(() {
+      paginaAtual = pagina;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.brown,
-        title: const Text('Página inicial'),
+      body: PageView(
+        controller: pc,
+        children: const [MoedasPage(), FavoritasPage(), Menu()],
+        onPageChanged: setPaginaAtual,
       ),
-      body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/moedas');
-              },
-              icon: const Icon(Icons.android),
-              label: const Text('Exemplo 1'),
-            ),
-            TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/moedas2');
-              },
-              icon: const Icon(Icons.apple_sharp),
-              label: const Text('Exemplo 2'),
-            ),
-            TextButton.icon(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/moedas3');
-              },
-              icon: const Icon(Icons.window_sharp),
-              label: const Text('Exemplo 3'),
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: paginaAtual,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.list), label: 'Todas'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.star_border), label: 'Favoritas'),
+          BottomNavigationBarItem(icon: Icon(Icons.menu), label: 'Menu'),
+        ],
+        onTap: (pagina) {
+          pc.animateToPage(
+            pagina,
+            duration: Duration(milliseconds: 400),
+            curve: Curves.ease,
+          );
+        },
+        backgroundColor: Color.fromARGB(255, 217, 192, 231),
       ),
     );
   }

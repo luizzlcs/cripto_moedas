@@ -1,8 +1,10 @@
 import 'package:cripto_moedas/model/moeda.dart';
 import 'package:cripto_moedas/pages/moedas_detalhe_page.dart';
+import 'package:cripto_moedas/repositories/favoritas_repository.dart';
 import 'package:cripto_moedas/repositories/moeda_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class MoedasPage extends StatefulWidget {
   const MoedasPage({Key? key}) : super(key: key);
@@ -15,6 +17,7 @@ class _MoedasPageState extends State<MoedasPage> {
   final tabela = MoedaRepository.tabela;
   NumberFormat real = NumberFormat.currency(locale: 'pt_BR', name: 'R\$');
   List<Moeda> selecionada = [];
+  late FavoritasRepository favoritas;
 
   appBarDinamica() {
     if (selecionada.isEmpty) {
@@ -50,8 +53,15 @@ class _MoedasPageState extends State<MoedasPage> {
     );
   }
 
+  limparSelecionadas() {
+    setState(() {
+      selecionada = [];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    favoritas = Provider.of<FavoritasRepository>(context);
     return Scaffold(
         appBar: appBarDinamica(),
         body: ListView.separated(
@@ -68,7 +78,15 @@ class _MoedasPageState extends State<MoedasPage> {
                       width: 40,
                       child: Image.asset(tabela[moeda].icon),
                     ),
-              title: Text(tabela[moeda].nome),
+              title: Row(
+                children: [
+                  Text(
+                    tabela[moeda].nome,
+                  ),
+                  if (favoritas.lista.contains(tabela[moeda]))
+                    const Icon(Icons.star, color: Colors.amber, size: 15)
+                ],
+              ),
               trailing: Text(
                 real.format(tabela[moeda].preco),
               ),
@@ -82,7 +100,22 @@ class _MoedasPageState extends State<MoedasPage> {
                   print(tabela[moeda].nome);
                 });
               },
-              onTap: () => detalheMoeda(tabela[moeda]),
+              onTap: () {
+                (selecionada.isEmpty
+                    ? detalheMoeda(tabela[moeda])
+                    : ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          elevation: 1,
+                          backgroundColor: Colors.amber[600],
+                          content: Text(
+                            selecionada.length > 1
+                                ? 'Remova os itens selecionados!'
+                                : 'Remova o item selecionado',
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                      ));
+              },
             );
           },
           padding: const EdgeInsets.all(16),
@@ -94,7 +127,10 @@ class _MoedasPageState extends State<MoedasPage> {
         floatingActionButton: selecionada.isNotEmpty
             ? FloatingActionButton.extended(
                 elevation: 10,
-                onPressed: () {},
+                onPressed: () {
+                  favoritas.saveAll(selecionada);
+                  limparSelecionadas();
+                },
                 label: const Text('FAVORITAR'),
                 icon: const Icon(Icons.star),
               )
